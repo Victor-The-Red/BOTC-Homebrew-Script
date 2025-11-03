@@ -2,7 +2,7 @@ export interface Character {
   id: string;
   name?: string;
   edition?: string;
-  team?: "townsfolk" | "outsider" | "minion" | "demon" | "traveler" | "fabled";
+  team?: "townsfolk" | "outsider" | "minion" | "demon" | "traveller" | "fabled";
   ability?: string;
   image?: string | string[];
   firstNight?: number;
@@ -32,7 +32,7 @@ export interface Character {
       | "firstDay"
       | "otherNight"
       | "otherDay";
-    global: "townsfolk" | "outsider" | "minion" | "demon" | "traveler";
+    global: "townsfolk" | "outsider" | "minion" | "demon" | "traveller";
   }[];
   official: boolean;
 }

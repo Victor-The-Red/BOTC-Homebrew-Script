@@ -1,7 +1,17 @@
 import { Container } from "@mui/material";
 import React from "react";
+import { useStylingContext } from "contexts/StylingContext";
 
 const ScriptSideBar: React.FC = () => {
+  const { styleState } = useStylingContext();
+  const { useA4Size, useSimpleDesign } = styleState;
+  
+  if (useSimpleDesign) {
+    return null;
+  }
+
+  const height = useA4Size ? 1123 : 1200;
+
   return (
     <Container
       disableGutters
@@ -10,7 +20,7 @@ const ScriptSideBar: React.FC = () => {
         maxWidth: 30,
         position: "absolute",
         backgroundImage: "url('/side-bar.png')",
-        height: 1200,
+        height: height,
         top: -1,
         left: -1,
         borderTopLeftRadius: 3,

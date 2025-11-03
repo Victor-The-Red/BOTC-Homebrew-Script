@@ -27,6 +27,7 @@ const FromFile: React.FC = () => {
             variant="filled"
             onChange={handleFileSelect}
             InputProps={{ sx: { color: "rgba(255, 255, 255, 0.7)" } }}
+            inputProps={{ accept: ".json, application/json" }}
           />
           <Button variant="contained" type="submit">
             Upload

@@ -5,6 +5,8 @@ import ScriptItems from "components/ScriptItems";
 import LoadData from "components/LoadData";
 import { Stack } from "@mui/material";
 
+export const DEV_MODE = false;
+
 const App: React.FC = () => {
   return (
     <Stack

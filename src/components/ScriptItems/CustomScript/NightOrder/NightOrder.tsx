@@ -65,7 +65,7 @@ const NightOrder: React.FC = () => {
     .concat([dawn, dusk, minion, demon])
     .filter(
       (char) =>
-        char.firstNight && char.team !== "fabled" && char.team !== "traveler"
+        char.firstNight && char.team !== "fabled" && char.team !== "traveller"
     );
   firstNightCharacters.sort(
     (char1, char2) => char1.firstNight - char2.firstNight
@@ -75,7 +75,7 @@ const NightOrder: React.FC = () => {
     .concat([dawn, dusk])
     .filter(
       (char) =>
-        char.otherNight && char.team !== "fabled" && char.team !== "traveler"
+        char.otherNight && char.team !== "fabled" && char.team !== "traveller"
     );
   otherNightCharacters.sort(
     (char1, char2) => char2.otherNight - char1.otherNight

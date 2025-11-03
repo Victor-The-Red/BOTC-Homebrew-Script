@@ -2,16 +2,21 @@ import React from "react";
 import { createTheme } from "@mui/material/styles";
 import OhChewy from "./fonts/Oh Chewy.ttf";
 import AppleGaramond from "./fonts/AppleGaramond.ttf";
+import OldEnglish from "./fonts/oldenglishtextmt.ttf";
+import LHFUnlovable from "./fonts/LHF Unlovable.ttf";
+import Amris from "./fonts/amrys-regular.otf";
 
 declare module "@mui/material/styles" {
   interface TypographyVariants {
     script: React.CSSProperties;
     scriptName: React.CSSProperties;
+    scriptHeader: React.CSSProperties;
     scriptFooter: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
     script?: React.CSSProperties;
     scriptName: React.CSSProperties;
+    scriptHeader: React.CSSProperties;
     scriptFooter: React.CSSProperties;
   }
 }
@@ -20,6 +25,7 @@ declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     script: true;
     scriptName: true;
+    scriptHeader: true;
     scriptFooter: true;
   }
 }
@@ -34,18 +40,24 @@ const theme = createTheme({
   typography: {
     script: {
       color: "black",
-      fontFamily: "applegaramond",
+      fontFamily: "Amris",
       fontSize: 14,
       lineHeight: 1.25,
     },
     scriptName: {
       color: "black",
-      fontFamily: "ohchewwy",
+      fontFamily: "LHFUnlovable",
       fontSize: 24,
+    },
+    scriptHeader: {
+      color: "black",
+      fontFamily: "applegaramond",
+      fontSize: 14,
+      lineHeight: 1.25,
     },
     scriptFooter: {
       color: "black",
-      fontFamily: "applegaramond",
+      fontFamily: "Amris",
       fontSize: 12,
     },
   },
@@ -72,6 +84,24 @@ const theme = createTheme({
               src: `url(${AppleGaramond}) format("truetype")`,
             },
           },
+		  {
+			"@font-face": {
+			  fontFamily: "oldenglish",
+			  src: `url(${OldEnglish}) format("truetype")`,
+			}
+		  },
+		  {
+			"@font-face": {
+			  fontFamily: "LHFUnlovable",
+			  src: `url(${LHFUnlovable}) format("truetype")`,
+			}
+		  },
+		  {
+			"@font-face": {
+			  fontFamily: "Amris",
+			  src: `url(${Amris}) format("opentype")`,
+			}
+		  }
         ],
       },
     },

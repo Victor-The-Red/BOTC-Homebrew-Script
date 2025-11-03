@@ -10,8 +10,10 @@ import ScriptHeader from "./ScriptHeader";
 import StyledPaper from "components/StyledPaper";
 import { useStylingContext } from "contexts/StylingContext";
 
-function splitArray<T>(array: T[]): [T[], T[]] {
-  const midIndex = Math.round(array.length / 2);
+const showTravellers = false;  // флаг для показа странников
+
+function splitArray<T>(array: T[], leftCount?: number): [T[], T[]] {
+  const midIndex = (leftCount !== undefined && leftCount !== 0) ? leftCount : Math.round(array.length / 2);
   const leftArray = array.slice(0, midIndex);
   const rightArray = array.slice(midIndex);
   return [leftArray, rightArray];
@@ -25,7 +27,7 @@ const Script: React.FC = () => {
   } = useAppContext();
 
   const {
-    styleState: { pageXPosition, pageYPosition },
+    styleState: { pageXPosition, pageYPosition, fabledSoloPercentage, leftColumnTownsfolkCount, tabHeaderOffset, useA4Size },
   } = useStylingContext();
 
   useEffect(() => {
@@ -33,15 +35,20 @@ const Script: React.FC = () => {
   }, [scriptRef]);
 
   const townsfolk = characterList.filter((char) => char.team === "townsfolk");
-  const [leftTownsfolk, rightTownsfolk] = splitArray(townsfolk);
+  const [leftTownsfolk, rightTownsfolk] = splitArray(townsfolk, leftColumnTownsfolkCount);
   const outsiders = characterList.filter((char) => char.team === "outsider");
   const [leftOutsiders, rightOutsiders] = splitArray(outsiders);
   const minions = characterList.filter((char) => char.team === "minion");
   const [leftMinions, rightMinions] = splitArray(minions);
   const demons = characterList.filter((char) => char.team === "demon");
   const [leftDemons, rightDemons] = splitArray(demons);
+  const travellers = characterList.filter((char) => char.team === "traveller");
+  const [leftTravellers, rightTravellers] = splitArray(travellers);
+  const fabled = characterList.filter((char) => char.team === "fabled");
+  const [leftFabled, rightFabled] = splitArray(fabled);
 
-  if (leftTownsfolk.length !== rightTownsfolk.length) {
+  // добавляем смещение для правого блока при нечётном количестве ролей
+  /*if (leftTownsfolk.length !== rightTownsfolk.length) {
     rightTownsfolk.unshift({
       id: "blank",
       name: "",
@@ -50,27 +57,66 @@ const Script: React.FC = () => {
       image: "",
       official: false,
     });
-  }
+  }*/
+
+  // Параметр ширины столбцов в зависимости от useA4Size
+  const roleColumnMaxWidth = useA4Size ? 375 : 425;
+  const roleColumnWidth = "50%";
+  
+  const spaces = "ㅤ".repeat(tabHeaderOffset || 0);
 
   return (
     <StyledPaper ref={scriptRef}>
       <ScriptSideBar />
       <ScriptHeader title={scriptName} image={scriptLogo} />
       <Stack position="relative" top={pageYPosition}>
+        {fabled.length > 0 && (
+          <>
+            <Stack direction="row">
+              <ScriptTabHeader title="ㅤ" />
+              <Stack
+                direction="row"
+                position="relative"
+                left={pageXPosition}
+                width="100%"
+              >
+                {fabled.length === 1 && fabledSoloPercentage !== 50 ? (
+                  <Stack maxWidth={roleColumnMaxWidth * 2} width={`${fabledSoloPercentage}%`}>
+                    <ScriptEntry character={fabled[0]} key={fabled[0].id} />
+                  </Stack>
+                ) : (
+                  <>
+                    <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+                      {leftFabled.map((char) => (
+                        <ScriptEntry character={char} key={char.id} />
+                      ))}
+                    </Stack>
+                    <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+                      {rightFabled.map((char) => (
+                        <ScriptEntry character={char} key={char.id} />
+                      ))}
+                    </Stack>
+                  </>
+                )}
+              </Stack>
+            </Stack>
+            <ScriptDivider />
+          </>
+        )}
         <Stack direction="row">
-          <ScriptTabHeader title="TOWNSFOLK" />
+          <ScriptTabHeader title={`ГОРОЖАНЕ${spaces}`} />
           <Stack
             direction="row"
             position="relative"
             left={pageXPosition}
             width={"100%"}
           >
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {leftTownsfolk.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
             </Stack>
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {rightTownsfolk.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
@@ -79,19 +125,19 @@ const Script: React.FC = () => {
         </Stack>
         <ScriptDivider />
         <Stack direction="row">
-          <ScriptTabHeader title="OUTSIDERS" />
+          <ScriptTabHeader title={`ИЗГОИ${spaces}`} />
           <Stack
             direction="row"
             position="relative"
             left={pageXPosition}
             width={"100%"}
           >
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {leftOutsiders.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
             </Stack>
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {rightOutsiders.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
@@ -100,19 +146,19 @@ const Script: React.FC = () => {
         </Stack>
         <ScriptDivider />
         <Stack direction="row">
-          <ScriptTabHeader title="MINIONS" />
+          <ScriptTabHeader title={`ПРИСПЕШНИКИ${spaces}`} />
           <Stack
             direction="row"
             position="relative"
             left={pageXPosition}
             width={"100%"}
           >
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {leftMinions.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
             </Stack>
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {rightMinions.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
@@ -121,25 +167,50 @@ const Script: React.FC = () => {
         </Stack>
         <ScriptDivider />
         <Stack direction="row">
-          <ScriptTabHeader title="DEMONS" />
+          <ScriptTabHeader title={`ДЕМОНЫ${spaces}`} />
           <Stack
             direction="row"
             position="relative"
             left={pageXPosition}
             width={"100%"}
           >
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {leftDemons.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
             </Stack>
-            <Stack maxWidth={425} width={"50%"}>
+            <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
               {rightDemons.map((char) => (
                 <ScriptEntry character={char} key={char.id} />
               ))}
             </Stack>
           </Stack>
         </Stack>
+        {showTravellers && travellers.length > 0 && (
+          <>
+            <ScriptDivider />
+            <Stack direction="row">
+              <ScriptTabHeader title={`СТРАННИКИ${spaces}`} />
+              <Stack
+                direction="row"
+                position="relative"
+                left={pageXPosition}
+                width={"100%"}
+              >
+                <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+                  {leftTravellers.map((char) => (
+                    <ScriptEntry character={char} key={char.id} />
+                  ))}
+                </Stack>
+                <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+                  {rightTravellers.map((char) => (
+                    <ScriptEntry character={char} key={char.id} />
+                  ))}
+                </Stack>
+              </Stack>
+            </Stack>
+          </>
+        )}
       </Stack>
       <ScriptFooter author={authorName} />
     </StyledPaper>

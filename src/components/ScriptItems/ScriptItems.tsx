@@ -3,6 +3,7 @@ import { Tab, Tabs } from "@mui/material";
 import CustomScript from "./CustomScript";
 import OfficialScript from "./OfficialScript";
 import { useAppContext } from "contexts/AppContext";
+import { DEV_MODE } from "App";
 
 const ScriptItems: React.FC = () => {
   const [scriptStyle, setScriptStyle] = useState<string>("OFFICIAL");
@@ -17,6 +18,10 @@ const ScriptItems: React.FC = () => {
 
   if (characterList.length === 0) {
     return null;
+  }
+  
+  if (!DEV_MODE) {
+    return <OfficialScript />;
   }
 
   return (
