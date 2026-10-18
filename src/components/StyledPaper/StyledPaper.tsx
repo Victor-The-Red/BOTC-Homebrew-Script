@@ -5,12 +5,14 @@ import { useStylingContext } from "contexts/StylingContext";
 const StyledPaper = forwardRef(
   ({ children }: PropsWithChildren, ref: MutableRefObject<undefined>) => {
     const { styleState } = useStylingContext();
-    const { useA4Size, useSimpleDesign } = styleState;
+    const { useA4Size, useSimpleDesign, customScriptHeight } = styleState;
 
     // Размеры для A4 и оригинальные
     const paperDimensions = useA4Size
       ? { width: 794, height: 1123 } // A4 при 96 dpi
       : { width: 900, height: 1200 }; // оригинальные
+
+	const scriptHeight = customScriptHeight === 0 ? paperDimensions.height : customScriptHeight;
 
     return (
       <Paper
@@ -18,7 +20,7 @@ const StyledPaper = forwardRef(
         sx={{
           display: "inline-block",
           width: paperDimensions.width,
-          height: paperDimensions.height,
+          height: scriptHeight,
           margin: "5%",
           position: "relative",
           backgroundColor: useSimpleDesign ? "white" : "transparent",

@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 
 export enum ActionTypes {
+  SET_CUSTOM_SCRIPT_HEIGHT = "SET_CUSTOM_SCRIPT_HEIGHT",
   SET_FABLED_SOLO_PERCENTAGE = "SET_FABLED_SOLO_PERCENTAGE",
   SET_FABLED_IMAGE_OFFSET = "SET_FABLED_IMAGE_OFFSET",
   SET_FABLED_ROW_SIZE = "SET_FABLED_ROW_SIZE",
@@ -23,11 +24,15 @@ export enum ActionTypes {
   SET_USE_A4_SIZE = "SET_USE_A4_SIZE",
   SET_USE_SIMPLE_DESIGN = "SET_USE_SIMPLE_DESIGN",
 }
+type setCustomScriptHeight = {
+  type: ActionTypes.SET_CUSTOM_SCRIPT_HEIGHT;
+  value: number;
+};
 type setFabledSoloPercentage = {
   type: ActionTypes.SET_FABLED_SOLO_PERCENTAGE;
   value: number;
 };
-type setfabledImageOffset = {
+type setFabledImageOffset = {
   type: ActionTypes.SET_FABLED_IMAGE_OFFSET;
   value: number;
 };
@@ -114,6 +119,7 @@ type setUseSimpleDesign = {
 };
 
 type State = {
+  customScriptHeight: number;
   fabledSoloPercentage: number;
   fabledImageOffset: number;
   fabledRowSize: number;
@@ -147,8 +153,9 @@ type State = {
 };
 
 type Action =
+  | setCustomScriptHeight
   | setFabledSoloPercentage
-  | setfabledImageOffset
+  | setFabledImageOffset
   | setFabledRowSize
   | setLeftColumnTownsfolkCount
   | setImageSize
@@ -171,6 +178,11 @@ type Action =
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+	case ActionTypes.SET_CUSTOM_SCRIPT_HEIGHT:
+      return {
+        ...state,
+        customScriptHeight: action.value,
+      };
     case ActionTypes.SET_FABLED_SOLO_PERCENTAGE:
       return {
         ...state,
@@ -297,6 +309,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const customScriptPreset: State = {
+  customScriptHeight: 0,
   fabledSoloPercentage: 50,
   fabledImageOffset: 0,
   fabledRowSize: 0,
@@ -329,6 +342,7 @@ const customScriptPreset: State = {
   useSimpleDesign: true,
 };
 const officialScriptPreset: State = {
+  customScriptHeight: 0,
   fabledSoloPercentage: 50,
   fabledImageOffset: 0,
   fabledRowSize: 0,
@@ -336,7 +350,7 @@ const officialScriptPreset: State = {
   HOMEBREW: {
     imageSize: 95,
     imagePosition: 0,
-	imageOffset: -10,
+	imageOffset: -15,
     abilityTextPosition: 0,
     nameTextPosition: 0,
   },
@@ -361,6 +375,7 @@ const officialScriptPreset: State = {
   useSimpleDesign: true,
 };
 const customNightOrderPreset: State = {
+  customScriptHeight: 0,
   fabledSoloPercentage: 50,
   fabledImageOffset: 0,
   fabledRowSize: 0,
@@ -393,6 +408,7 @@ const customNightOrderPreset: State = {
   useSimpleDesign: true,
 };
 const officialNightOrderPreset: State = {
+  customScriptHeight: 0,
   fabledSoloPercentage: 50,
   fabledImageOffset: 0,
   fabledRowSize: 0,

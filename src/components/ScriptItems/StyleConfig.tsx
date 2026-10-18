@@ -11,6 +11,9 @@ const StyleConfig: React.FC<{
   const { appState: { scriptName } } = useAppContext();
   const {
     styleState,
+    setUseA4Size,
+	setUseSimpleDesign,
+	setCustomScriptHeight,
 	setFabledSoloPercentage,
     setFabledImageOffset,
     setFabledRowSize,
@@ -30,13 +33,14 @@ const StyleConfig: React.FC<{
     setPageYPosition,
 	setTabHeaderOffset,
 	setAuthorOffset,
-    setUseA4Size,
-	setUseSimpleDesign,
   } = useStylingContext();
 
   const {
     HOMEBREW,
     OFFICIAL,
+    useA4Size,
+	useSimpleDesign,
+	customScriptHeight,
     fabledSoloPercentage,
     fabledImageOffset,
     fabledRowSize,
@@ -45,8 +49,6 @@ const StyleConfig: React.FC<{
     fontSize,
     pageXPosition,
     pageYPosition,
-    useA4Size,
-	useSimpleDesign,
   } = styleState;
   
   // 💾 Сохранение в JSON файл
@@ -77,6 +79,9 @@ const StyleConfig: React.FC<{
 
         // Универсальное применение обычных числовых/логических полей
         const applyConfig: Record<string, (value: any) => void> = {
+          useA4Size: setUseA4Size,
+          useSimpleDesign: setUseSimpleDesign,
+		  customScriptHeight: setCustomScriptHeight,
           fabledSoloPercentage: setFabledSoloPercentage,
           fabledImageOffset: setFabledImageOffset,
           fabledRowSize: setFabledRowSize,
@@ -91,8 +96,6 @@ const StyleConfig: React.FC<{
           pageYPosition: setPageYPosition,
           tabHeaderOffset: setTabHeaderOffset,
           authorOffset: setAuthorOffset,
-          useA4Size: setUseA4Size,
-          useSimpleDesign: setUseSimpleDesign,
         };
 
         for (const key in applyConfig) {
@@ -230,6 +233,16 @@ const StyleConfig: React.FC<{
 		  }}
         />
       </Grid>
+	  <Grid item xs={12}>
+		<TextField
+		  label="Custom Script Height"
+		  type="number"
+		  value={customScriptHeight}
+		  onChange={(e) => setCustomScriptHeight(Number(e.target.value))}
+		  InputProps={inputProps}
+		  fullWidth
+		/>
+	  </Grid>
 	  <Grid item xs={6}>
         <TextField
 		  label="Fabled Solo Percentage"

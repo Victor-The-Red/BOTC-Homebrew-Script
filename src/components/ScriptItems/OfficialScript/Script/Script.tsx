@@ -45,7 +45,8 @@ const Script: React.FC = () => {
   const travellers = characterList.filter((char) => char.team === "traveller");
   const [leftTravellers, rightTravellers] = splitArray(travellers);
   const fabled = characterList.filter((char) => char.team === "fabled");
-  const [leftFabled, rightFabled] = splitArray(fabled);
+  const extraFabled = fabled.length % 2 !== 0 ? fabled[fabled.length - 1] : null;
+  const [leftFabled, rightFabled] = splitArray(fabled.length % 2 !== 0 ? fabled.slice(0, -1) : fabled);
 
   // добавляем смещение для правого блока при нечётном количестве ролей
   /*if (leftTownsfolk.length !== rightTownsfolk.length) {
@@ -71,38 +72,37 @@ const Script: React.FC = () => {
       <ScriptHeader title={scriptName} image={scriptLogo} />
       <Stack position="relative" top={pageYPosition}>
         {fabled.length > 0 && (
-          <>
-            <Stack direction="row">
-              <ScriptTabHeader title="ㅤ" />
-              <Stack
-                direction="row"
-                position="relative"
-                left={pageXPosition}
-                width="100%"
-              >
-                {fabled.length === 1 && fabledSoloPercentage !== 50 ? (
-                  <Stack maxWidth={roleColumnMaxWidth * 2} width={`${fabledSoloPercentage}%`}>
-                    <ScriptEntry character={fabled[0]} key={fabled[0].id} />
-                  </Stack>
-                ) : (
-                  <>
-                    <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
-                      {leftFabled.map((char) => (
-                        <ScriptEntry character={char} key={char.id} />
-                      ))}
-                    </Stack>
-                    <Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
-                      {rightFabled.map((char) => (
-                        <ScriptEntry character={char} key={char.id} />
-                      ))}
-                    </Stack>
-                  </>
-                )}
-              </Stack>
-            </Stack>
-            <ScriptDivider />
-          </>
-        )}
+		  <>
+			<Stack direction="row">
+			  <ScriptTabHeader title="ㅤ" />
+			  <Stack direction="column" width="100%" position="relative" left={pageXPosition}>
+				{leftFabled.length > 0 && (
+				  <Stack direction="row">
+					<Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+					  {leftFabled.map((char) => (
+						<ScriptEntry character={char} key={char.id} />
+					  ))}
+					</Stack>
+					<Stack maxWidth={roleColumnMaxWidth} width={roleColumnWidth}>
+					  {rightFabled.map((char) => (
+						<ScriptEntry character={char} key={char.id} />
+					  ))}
+					</Stack>
+				  </Stack>
+				)}
+				{extraFabled && (
+				  <Stack 
+					maxWidth={roleColumnMaxWidth * 2} 
+					width={`${fabledSoloPercentage}%`}
+				  >
+					<ScriptEntry character={extraFabled} key={extraFabled.id} />
+				  </Stack>
+				)}
+			  </Stack>
+			</Stack>
+			<ScriptDivider />
+		  </>
+		)}
         <Stack direction="row">
           <ScriptTabHeader title={`ГОРОЖАНЕ${spaces}`} />
           <Stack

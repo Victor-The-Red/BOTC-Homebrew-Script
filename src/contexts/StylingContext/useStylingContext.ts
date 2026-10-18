@@ -6,6 +6,9 @@ const useStylingContext = () => {
   const context = useContext(StylingContext);
   const [styleState, dispatch] = context;
 
+  const setCustomScriptHeight = (value: number) => {
+	dispatch({ type: ActionTypes.SET_CUSTOM_SCRIPT_HEIGHT, value });
+  };
   const setFabledSoloPercentage = (value: number) => {
 	dispatch({ type: ActionTypes.SET_FABLED_SOLO_PERCENTAGE, value });
   };
@@ -86,6 +89,7 @@ const useStylingContext = () => {
 
   return {
     styleState,
+	setCustomScriptHeight,
 	setFabledSoloPercentage,
     setFabledImageOffset,
     setFabledRowSize,

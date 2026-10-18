@@ -21,6 +21,8 @@ const ScriptFooter: React.FC<{ author: string }> = ({ author }) => {
       };
 
   const spaces = "ㅤ".repeat(authorOffset || 0);
+  
+  const hasAuthor = author && author.trim() !== "";
 
   if (useSimpleDesign) {
     return (
@@ -51,9 +53,11 @@ const ScriptFooter: React.FC<{ author: string }> = ({ author }) => {
         <Grid item sm={4} />
 
         <Grid item sm={3} style={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="scriptFooter" style={{ whiteSpace: "pre-line" }}>
-            {`${spaces}Script by ${author}`}
-          </Typography>
+          {hasAuthor && (
+            <Typography variant="scriptFooter" style={{ whiteSpace: "pre-line" }}>
+              {`${spaces}Script by ${author}`}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     );
@@ -102,9 +106,11 @@ const ScriptFooter: React.FC<{ author: string }> = ({ author }) => {
       </Grid>
       <Grid item sm={4} />
       <Grid item sm={3}>
-        <Typography variant="scriptFooter" style={{ whiteSpace: "pre-line" }}>
-		  {`\n${spaces}Script by ${author}`}
-        </Typography>
+        {hasAuthor && (
+          <Typography variant="scriptFooter" style={{ whiteSpace: "pre-line" }}>
+            {`\n${spaces}Script by ${author}`}
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
